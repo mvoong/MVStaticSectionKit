@@ -10,11 +10,15 @@ import CoreData
 
 public class Section : NSObject {
     public var title: String?
-    public var items = [Item]()
+    public var items = [AnyObject]()
+    
+    var resultsControllerChanged: (() -> Void)?
+    
     var fetchedResultsController: NSFetchedResultsController? {
         didSet {
             if oldValue != fetchedResultsController {
                 oldValue?.delegate = nil
+                self.resultsControllerChanged?()
             }
         }
     }
@@ -28,23 +32,24 @@ public class Section : NSObject {
         self.fetchedResultsController = fetchedResultsController
     }
     
-    public init(_ title: String, items: [Item]) {
+    public init(_ title: String, items: [AnyObject]) {
         self.title = title
         self.items = items
     }
     
     public func withResultsController(resultsController: NSFetchedResultsController) -> Self {
         self.fetchedResultsController = resultsController
+        
         return self
     }
     
-    public func withItems(items: [Item]) -> Self {
+    public func withItems(items: [AnyObject]) -> Self {
         self.items = items
         
         return self
     }
     
-    public func addItem(item: Item) {
+    public func addItem(item: AnyObject) {
         self.items.append(item)
     }
     
@@ -52,10 +57,11 @@ public class Section : NSObject {
         if let controller = self.fetchedResultsController {
             let indexPath = NSIndexPath(forItem: index, inSection: 0)
             return controller.objectAtIndexPath(indexPath)
-        } else {
-            let item = self.items[index]
-            return item.object ?? item
+        } else if index < self.items.count {
+            return self.items[index]
         }
+        
+        return nil
     }
     
     public func numberOfItems() -> Int {

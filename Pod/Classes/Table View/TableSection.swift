@@ -6,11 +6,11 @@
 //  Copyright © 2015 Michael Voong. All rights reserved.
 //
 
-import Foundation
+import CoreData
 
 public class TableSection : Section {
     public typealias CellFactoryType = (tableView: UITableView, indexPath: NSIndexPath, item: AnyObject) -> (UITableViewCell)
-    public typealias ConfigureCellType = (tableView: UITableView, item: AnyObject) -> (UITableViewCell)
+    public typealias ConfigureCellType = (tableView: UITableView, cell: UITableViewCell, item: AnyObject) -> (UITableViewCell)
     public typealias SectionViewFactoryType = (tableView: UITableView, section: TableSection) -> (UITableViewHeaderFooterView)
     
     var cellFactory: CellFactoryType?

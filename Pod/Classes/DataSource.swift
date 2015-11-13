@@ -9,14 +9,13 @@
 import Foundation
 import CoreData
 
-public class DataSource<T: Section> : NSObject {
-    typealias SectionType = T
+public class DataSource<S: Section> : NSObject {
+    /**
+     The static sections
+     */
+    lazy var sections = [S]()
     
-    lazy var sections = [T]()
-    
-    override init() {
-        super.init()
-    }
+    lazy var resultsControllerDelegates = [NSFetchedResultsController: NSFetchedResultsControllerDelegate]()
     
     /**
      - returns: The number of `Section` objects
@@ -57,8 +56,8 @@ public class DataSource<T: Section> : NSObject {
      
      - returns: The empty `Section` that has been added
      */
-    public func addSection() -> T {
-        let section = T()
+    public func addSection() -> S {
+        let section = S()
         self.addSection(section)
         
         return section
@@ -69,8 +68,12 @@ public class DataSource<T: Section> : NSObject {
      
      - returns: The `Section` that has been added
      */
-    public func addSection(section: T) -> T {
+    public func addSection(section: S) -> S {
         self.sections.append(section)
+        
+        section.resultsControllerChanged = { [unowned self] in
+            self.updateResultsControllerDelegates()
+        }
         
         return section
     }
@@ -80,8 +83,12 @@ public class DataSource<T: Section> : NSObject {
      
      -  returns: The `Section` that has been inserted
      */
-    public func insertSection(section: T, atIndex: Int) -> T{
+    public func insertSection(section: S, atIndex: Int) -> S {
         self.sections.insert(section, atIndex: atIndex)
+        
+        section.resultsControllerChanged = { [unowned self] in
+            self.updateResultsControllerDelegates()
+        }
         
         return section
     }
@@ -89,7 +96,12 @@ public class DataSource<T: Section> : NSObject {
     /**
      Deletes a section from the receiver
      */
-    public func deleteSection(section: T, atIndex: Int) {
+    public func deleteSection(section: S, atIndex: Int) {
+        if let resultsController = section.fetchedResultsController {
+            resultsController.delegate = nil
+            self.resultsControllerDelegates.removeValueForKey(resultsController)
+        }
+        
         self.sections.removeObject(section)
     }
 
@@ -108,7 +120,7 @@ public class DataSource<T: Section> : NSObject {
      
      - returns: The `Section`, or nil if no section exists at that index
      */
-    public func sectionForIndex(index: Int) -> T? {
+    public func sectionForIndex(index: Int) -> S? {
         return self.sections[index]
     }
     
@@ -132,7 +144,7 @@ public class DataSource<T: Section> : NSObject {
      - parameter resultsController: The results controller to search the sections for
      - returns: The found `Section`
      */
-    public func sectionForFetchedResultsController(resultsController: NSFetchedResultsController) -> T? {
+    public func sectionForFetchedResultsController(resultsController: NSFetchedResultsController) -> S? {
         for section in self.sections {
             if section.fetchedResultsController == resultsController {
                 return section
@@ -146,8 +158,12 @@ public class DataSource<T: Section> : NSObject {
      
      - parameter section: The `Section` to search for
      */
-    public func sectionIndexForSection(section: T) -> Int? {
+    public func sectionIndexForSection(section: S) -> Int? {
         return self.sections.indexOf(section)
+    }
+    
+    func updateResultsControllerDelegates() {
+        
     }
     
     deinit {

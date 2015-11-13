@@ -6,23 +6,18 @@
 //  Copyright © 2015 Michael Voong. All rights reserved.
 //
 
-import Foundation
+import CoreData
 
 public class CollectionSection : Section {
-    public typealias CellFactoryType = (collectionView: UICollectionView, section: CollectionSection, item: AnyObject) -> (UICollectionViewCell)
+    public typealias CellFactoryType = (collectionView: UICollectionView, indexPath: NSIndexPath, item: AnyObject) -> (UICollectionViewCell)
+    public typealias ConfigureCellType = (collectionView: UICollectionView, cell: UICollectionViewCell, item: AnyObject) -> (UICollectionViewCell)
     public typealias SectionViewFactoryType = (collectionView: UICollectionView, section: CollectionSection) -> (UICollectionReusableView)
     
     var cellFactory: CellFactoryType?
+    var configureCell: ConfigureCellType?
     var sectionViewFactory: SectionViewFactoryType?
     
     public required init() {
         super.init()
-    }
-    
-    public init(cellFactory: CellFactoryType, sectionViewFactory: SectionViewFactoryType? = nil) {
-        super.init()
-        
-        self.cellFactory = cellFactory
-        self.sectionViewFactory = sectionViewFactory
     }
 }
