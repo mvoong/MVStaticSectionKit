@@ -1,5 +1,5 @@
 //
-//  CollectionDataSource.swift
+//  StaticCollectionDataSource.swift
 //  MVStaticSectionKit
 //
 //  Created by Michael Voong on 12/11/2015.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-public class CollectionDataSource : DataSource<CollectionSection>, UICollectionViewDataSource {
+public class StaticCollectionDataSource : StaticDataSource<CollectionSection>, UICollectionViewDataSource {
     weak var collectionView: UICollectionView?
     
     public init(collectionView: UICollectionView) {
@@ -47,7 +47,7 @@ public class CollectionDataSource : DataSource<CollectionSection>, UICollectionV
         for section in self.sections {
             if let collectionView = self.collectionView, resultsController = section.fetchedResultsController {
                 if self.resultsControllerDelegates[resultsController] == nil {
-                    self.resultsControllerDelegates[resultsController] = CollectionFetchedResultsControllerDelegate(view: collectionView, resultsController: resultsController, dataSource: self)
+                    self.resultsControllerDelegates[resultsController] = StaticCollectionFetchedResultsControllerDelegate(view: collectionView, resultsController: resultsController, dataSource: self)
                 }
             }
         }

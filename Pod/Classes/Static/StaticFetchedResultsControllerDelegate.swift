@@ -8,7 +8,7 @@
 
 import CoreData
 
-public class FetchedResultsControllerDelegate<S: Section, V: UIView> : NSObject {
+public class StaticFetchedResultsControllerDelegate<S: Section, V: UIView> : NSObject {
     typealias ViewType = V
     typealias ObjectChangeTuple = (changeType: NSFetchedResultsChangeType, indexPaths: [NSIndexPath])
     
@@ -28,7 +28,7 @@ public class FetchedResultsControllerDelegate<S: Section, V: UIView> : NSObject 
     var updatedObjects = [NSIndexPath: AnyObject]()
     
     weak var resultsController: NSFetchedResultsController?
-    weak var dataSource: DataSource<S>?
+    weak var dataSource: StaticDataSource<S>?
     weak var view: V?
     
     var section: S? {

@@ -9,21 +9,23 @@
 import UIKit
 
 public class TableDelegate : NSObject, UITableViewDelegate {
-    weak var dataSource: TableDataSource?
+    weak var tableView: UITableView?
+    weak var dataSource: DataSource?
     weak var viewController: UIViewController?
     
-    public init(dataSource: TableDataSource, viewController: UIViewController) {
+    public init(tableView: UITableView, dataSource: DataSource, viewController: UIViewController) {
         super.init()
         
+        self.tableView = tableView
         self.dataSource = dataSource
         self.viewController = viewController
         
-        dataSource.tableView?.delegate = self
+        tableView.delegate = self
     }
     
     deinit {
-        if self.dataSource?.tableView?.delegate === self {
-            self.dataSource?.tableView?.delegate = nil
+        if self.tableView?.delegate === self {
+            self.tableView?.delegate = nil
         }
     }
 }

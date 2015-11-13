@@ -1,5 +1,5 @@
 //
-//  TableFetchedResultsControllerDelegate.swift
+//  StaticTableFetchedResultsControllerDelegate.swift
 //  MVStaticSectionKit
 //
 //  Created by Michael Voong on 13/11/2015.
@@ -9,10 +9,11 @@
 import CoreData
 import UIKit
 
-public class TableFetchedResultsControllerDelegate : FetchedResultsControllerDelegate<TableSection, UITableView>, NSFetchedResultsControllerDelegate {
-    public init(view: UITableView, resultsController: NSFetchedResultsController, dataSource: TableDataSource) {
+public class StaticTableFetchedResultsControllerDelegate : StaticFetchedResultsControllerDelegate<TableSection, UITableView>, NSFetchedResultsControllerDelegate {
+    public init(view: UITableView, resultsController: NSFetchedResultsController, dataSource: StaticTableDataSource) {
         super.init()
         
+        assert(resultsController.sectionNameKeyPath == nil, "NSFetchedResultsController with sectionNameKeyPath is unsupported. Please use FetchedTableDataSource instead.")
         self.view = view
         self.resultsController = resultsController
         self.dataSource = dataSource

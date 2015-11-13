@@ -1,5 +1,5 @@
 //
-//  TableDataSource.swift
+//  StaticTableDataSource.swift
 //  MVStaticSectionKit
 //
 //  Created by Michael Voong on 12/11/2015.
@@ -8,7 +8,7 @@
 
 import CoreData
 
-public class TableDataSource : DataSource<TableSection>, UITableViewDataSource {
+public class StaticTableDataSource : StaticDataSource<TableSection>, UITableViewDataSource {
     /**
      The associated view
      */
@@ -65,7 +65,7 @@ public class TableDataSource : DataSource<TableSection>, UITableViewDataSource {
         for section in self.sections {
             if let tableView = self.tableView, resultsController = section.fetchedResultsController {
                 if self.resultsControllerDelegates[resultsController] == nil {
-                    self.resultsControllerDelegates[resultsController] = TableFetchedResultsControllerDelegate(view: tableView, resultsController: resultsController, dataSource: self)
+                    self.resultsControllerDelegates[resultsController] = StaticTableFetchedResultsControllerDelegate(view: tableView, resultsController: resultsController, dataSource: self)
                 }
             }
         }

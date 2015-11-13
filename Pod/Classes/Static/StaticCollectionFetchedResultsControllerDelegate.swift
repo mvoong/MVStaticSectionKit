@@ -9,8 +9,8 @@
 import CoreData
 import UIKit
 
-public class CollectionFetchedResultsControllerDelegate : FetchedResultsControllerDelegate<CollectionSection, UICollectionView>, NSFetchedResultsControllerDelegate {
-    public init(view: UICollectionView, resultsController: NSFetchedResultsController, dataSource: CollectionDataSource) {
+public class StaticCollectionFetchedResultsControllerDelegate : StaticFetchedResultsControllerDelegate<CollectionSection, UICollectionView>, NSFetchedResultsControllerDelegate {
+    public init(view: UICollectionView, resultsController: NSFetchedResultsController, dataSource: StaticCollectionDataSource) {
         super.init()
         
         self.view = view
@@ -84,5 +84,11 @@ public class CollectionFetchedResultsControllerDelegate : FetchedResultsControll
             self.updatedObjects.removeAll()
             self.objectChanges.removeAll()
         })
+    }
+    
+    deinit {
+        if self.view?.dataSource === self {
+            self.view?.dataSource = nil
+        }
     }
 }
