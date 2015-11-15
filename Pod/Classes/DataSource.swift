@@ -24,8 +24,8 @@ extension DataSource {
     }
 }
 
-public typealias TableCellFactoryType = (tableView: UITableView, indexPath: NSIndexPath, item: AnyObject) -> (UITableViewCell)
-public typealias TableConfigureCellType = (tableView: UITableView, cell: UITableViewCell, item: AnyObject) -> (UITableViewCell)
+public typealias TableCellFactoryType = (tableView: UITableView, indexPath: NSIndexPath, object: AnyObject) -> (UITableViewCell)
+public typealias TableConfigureCellType = (cell: UITableViewCell, object: AnyObject) -> Void
 public typealias TableSectionViewFactoryType = (tableView: UITableView, section: TableSection) -> (UITableViewHeaderFooterView)
 
 public protocol TableDataSource : class, DataSource {
@@ -34,8 +34,8 @@ public protocol TableDataSource : class, DataSource {
     func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType?
 }
 
-public typealias CollectionCellFactoryType = (collectionView: UICollectionView, indexPath: NSIndexPath, item: AnyObject) -> (UICollectionViewCell)
-public typealias CollectionConfigureCellType = (collectionView: UICollectionView, cell: UICollectionViewCell, item: AnyObject) -> (UICollectionViewCell)
+public typealias CollectionCellFactoryType = (collectionView: UICollectionView, indexPath: NSIndexPath, object: AnyObject) -> (UICollectionViewCell)
+public typealias CollectionConfigureCellType = (cell: UICollectionViewCell, object: AnyObject) -> Void
 public typealias CollectionSectionViewFactoryType = (collectionView: UICollectionView, section: CollectionSection) -> (UICollectionReusableView)
 
 public protocol CollectionDataSource : class, DataSource {

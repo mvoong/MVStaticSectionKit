@@ -24,8 +24,9 @@ public class StaticDataSource<S: Section> : NSObject {
      
      - returns: The empty `Section` that has been added
      */
-    public func addSection() -> S {
+    public func addSection(title: String? = nil) -> S {
         let section = S()
+        section.title = title
         self.addSection(section)
         
         return section
@@ -214,13 +215,17 @@ public class StaticTableDataSource : StaticDataSource<TableSection>, UITableView
             fatalError("Invalid section: \(indexPath)")
         }
         
-        let cell = cellFactory(tableView: tableView, indexPath: indexPath, item: object)
+        let cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
         
         if let configureCell = section.configureCell {
-            configureCell(tableView: tableView, cell: cell, item: object)
+            configureCell(cell: cell, object: object)
         }
         
         return cell
+    }
+    
+    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return self.sectionForIndex(section)?.title
     }
     
     override func updateResultsControllerDelegates() {
@@ -282,10 +287,10 @@ public class StaticCollectionDataSource : StaticDataSource<CollectionSection>, U
                 fatalError("Invalid section: \(indexPath)")
         }
         
-        let cell = section.cellFactory(collectionView: collectionView, indexPath: indexPath, item: object)
+        let cell = section.cellFactory(collectionView: collectionView, indexPath: indexPath, object: object)
         
         if let configureCell = section.configureCell {
-            configureCell(collectionView: collectionView, cell: cell, item: object)
+            configureCell(cell: cell, object: object)
         }
         
         return cell

@@ -1,12 +1,8 @@
 PODS:
   - MVStaticSectionKit (0.1.0)
-  - Nimble (3.0.0)
-  - Quick (0.3.1)
 
 DEPENDENCIES:
   - MVStaticSectionKit (from `../`)
-  - Nimble
-  - Quick (~> 0.3.1)
 
 EXTERNAL SOURCES:
   MVStaticSectionKit:
@@ -14,7 +10,5 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   MVStaticSectionKit: b1e43708ee8cc6e663b7def8812279551e0806e4
-  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
-  Quick: 824572d3d198d51e52cf4aa722cebf7e59952a35
 
 COCOAPODS: 0.39.0

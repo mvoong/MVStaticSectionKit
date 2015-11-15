@@ -64,7 +64,7 @@ public class TableFetchedResultsControllerDelegate : FetchedResultsControllerDel
                 sectionIndex = self.dataSource?.convertSectionForResultsController(controller, sectionIndex: indexPath.section),
                 cell = self.tableView?.cellForRowAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: sectionIndex)),
                 configureCell = self.dataSource?.configureCellForSection(indexPath.section) {
-                    configureCell(tableView: self.tableView!, cell: cell, item: anObject)
+                    configureCell(cell: cell, object: anObject)
             }
         case .Move:
             if let indexPath = indexPath, newIndexPath = newIndexPath,
@@ -155,7 +155,7 @@ public class CollectionFetchedResultsControllerDelegate : FetchedResultsControll
                         object = self.updatedObjects[indexPath],
                         cell = self.collectionView?.cellForItemAtIndexPath(indexPath),
                         configureCell = self.dataSource?.configureCellForSection(indexPath.section) {
-                            configureCell(collectionView: self.collectionView!, cell: cell, item: object)
+                            configureCell(cell: cell, object: object)
                     }
                 case .Move:
                     if let deleteIndexPath = indexPaths.first {

@@ -82,8 +82,9 @@ public class TableSection : Section {
         super.init()
     }
     
-    public func withCellFactory(cellFactory: TableCellFactoryType) -> Self {
+    public func withCellFactory(cellFactory: TableCellFactoryType, configureCell: TableConfigureCellType? = nil) -> Self {
         self.cellFactory = cellFactory
+        self.configureCell = configureCell
         
         return self
     }

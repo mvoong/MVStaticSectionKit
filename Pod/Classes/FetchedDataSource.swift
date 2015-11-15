@@ -102,10 +102,10 @@ extension FetchedTableDataSource : UITableViewDataSource {
             fatalError("Invalid section: \(indexPath)")
         }
         
-        let cell = cellFactory(tableView: tableView, indexPath: indexPath, item: object)
+        let cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
         
         if let configureCell = self.configureCell {
-            configureCell(tableView: tableView, cell: cell, item: object)
+            configureCell(cell: cell, object: object)
         }
         
         return cell

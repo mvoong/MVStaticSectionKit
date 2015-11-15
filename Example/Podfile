@@ -8,6 +8,6 @@ end
 target 'MVStaticSectionKit_Tests', :exclusive => true do
   pod "MVStaticSectionKit", :path => "../"
 
-  pod 'Quick', '~> 0.3.1'
-  pod 'Nimble'
+#  pod 'Quick', '~> 0.3.1'
+#  pod 'Nimble'
 end
