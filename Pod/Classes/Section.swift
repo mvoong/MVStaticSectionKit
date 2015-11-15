@@ -11,6 +11,7 @@ import CoreData
 public class Section : NSObject {
     public var title: String?
     public var items = [AnyObject]()
+    public var reuseIdentifier: String?
     
     var resultsControllerChanged: (() -> Void)?
     
@@ -45,6 +46,12 @@ public class Section : NSObject {
     
     public func withItems(items: [AnyObject]) -> Self {
         self.items = items
+        
+        return self
+    }
+    
+    public func withReuseIdentifier(reuseIdentifier: String) -> Self {
+        self.reuseIdentifier = reuseIdentifier
         
         return self
     }
@@ -113,6 +120,7 @@ public class CollectionSection : Section {
     
     public func withCellFactory(cellFactory: CollectionCellFactoryType) -> Self {
         self.cellFactory = cellFactory
+        self.reuseIdentifier = nil
         
         return self
     }

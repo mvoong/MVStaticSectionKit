@@ -16,10 +16,6 @@ class MixedViewController: UIViewController {
     var dataSource: StaticTableDataSource!
     let dataContext = DataContext()
     
-    let cellFactory: TableCellFactoryType = { tableView, indexPath, object in
-        return tableView.dequeueReusableCellWithIdentifier("Cell" , forIndexPath: indexPath)
-    }
-    
     let configureCell: TableConfigureCellType = { cell, object in
         if let person = object as? Person {
             cell.textLabel?.text = (object as? Person)?.name
@@ -39,7 +35,8 @@ class MixedViewController: UIViewController {
         self.dataSource
             .addSection("Static Section")
             .withItems([ "Static 1", "Static 2" ])
-            .withCellFactory(self.cellFactory, configureCell: self.configureCell)
+            .withReuseIdentifier("Cell")
+            .withConfigureCell(self.configureCell)
         
         // Section driven from fetched results controller
         let resultsController = self.dataContext.people.sortByAttributeName("name").toFetchedResultsController()
@@ -48,7 +45,8 @@ class MixedViewController: UIViewController {
         self.dataSource
             .addSection("Fetched Results Controller Section")
             .withResultsController(resultsController)
-            .withCellFactory(self.cellFactory, configureCell: self.configureCell)
+            .withReuseIdentifier("Cell")
+            .withConfigureCell(self.configureCell)
     }
     
     func createTestData() {

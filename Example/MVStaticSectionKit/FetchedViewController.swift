@@ -15,11 +15,7 @@ class FetchedViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var dataSource: FetchedDataSource?
     let dataContext = DataContext()
-    
-    let cellFactory: TableCellFactoryType = { tableView, indexPath, object in
-        return tableView.dequeueReusableCellWithIdentifier("Cell" , forIndexPath: indexPath)
-    }
-    
+
     let configureCell: TableConfigureCellType = { cell, object in
         cell.textLabel?.text = (object as? Person)?.name
     }
@@ -33,7 +29,8 @@ class FetchedViewController: UIViewController {
         try! resultsController.performFetch()
         
         self.dataSource = FetchedTableDataSource(tableView: self.tableView, resultsController: resultsController)
-            .withCellFactory(self.cellFactory, configureCell: self.configureCell)
+            .withReuseIdentifier("Cell")
+            .withConfigureCell(self.configureCell)
     }
     
     func createTestData() {

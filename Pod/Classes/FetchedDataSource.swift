@@ -54,6 +54,7 @@ public class FetchedTableDataSource : FetchedDataSource {
     var configureCell: TableConfigureCellType?
     var sectionViewFactory: TableSectionViewFactoryType?
     var resultsControllerDelegate: TableFetchedResultsControllerDelegate?
+    var reuseIdentifier: String?
     
     /**
      Initialises the data source with a given table. A weak reference is made to the table view.
@@ -81,6 +82,12 @@ public class FetchedTableDataSource : FetchedDataSource {
         
         return self
     }
+    
+    public func withReuseIdentifier(reuseIdentifier: String) -> Self {
+        self.reuseIdentifier = reuseIdentifier
+        
+        return self
+    }
 
     deinit {
         if self.tableView?.dataSource === self {
@@ -103,17 +110,19 @@ extension FetchedTableDataSource : UITableViewDataSource {
             fatalError("Invalid section: \(indexPath)")
         }
         
-        guard let cellFactory = self.cellFactory else {
-            fatalError("No cell factory given")
+        var cell: UITableViewCell?
+
+        if let reuseIdentifier = self.reuseIdentifier {
+            cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+        } else if let cellFactory = self.cellFactory {
+            cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
         }
-        
-        let cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
         
         if let configureCell = self.configureCell {
-            configureCell(cell: cell, object: object)
+            configureCell(cell: cell!, object: object)
         }
         
-        return cell
+        return cell!
     }
 }
 

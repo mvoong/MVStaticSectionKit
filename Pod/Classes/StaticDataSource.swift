@@ -211,17 +211,24 @@ public class StaticTableDataSource : StaticDataSource<TableSection>, UITableView
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let object = self.objectAtIndexPath(indexPath), section = self.sectionForIndex(indexPath.section), cellFactory = section.cellFactory else {
+        guard let object = self.objectAtIndexPath(indexPath),
+            section = self.sectionForIndex(indexPath.section) else {
             fatalError("Invalid section: \(indexPath)")
         }
+
+        var cell: UITableViewCell?
         
-        let cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
-        
-        if let configureCell = section.configureCell {
-            configureCell(cell: cell, object: object)
+        if let reuseIdentifier = section.reuseIdentifier {
+            cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+        } else if let cellFactory = section.cellFactory {
+            cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
         }
         
-        return cell
+        if let configureCell = section.configureCell {
+            configureCell(cell: cell!, object: object)
+        }
+        
+        return cell!
     }
     
     public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
