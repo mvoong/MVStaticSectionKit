@@ -69,8 +69,9 @@ public class FetchedTableDataSource : FetchedDataSource {
         self.resultsControllerDelegate = TableFetchedResultsControllerDelegate(tableView: tableView, resultsController: resultsController, dataSource: self)
     }
     
-    public func withCellFactory(cellFactory: TableCellFactoryType) -> Self {
+    public func withCellFactory(cellFactory: TableCellFactoryType, configureCell: TableConfigureCellType? = nil) -> Self {
         self.cellFactory = cellFactory
+        self.configureCell = configureCell
         
         return self
     }
@@ -100,6 +101,10 @@ extension FetchedTableDataSource : UITableViewDataSource {
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard let object = self.objectAtIndexPath(indexPath) else {
             fatalError("Invalid section: \(indexPath)")
+        }
+        
+        guard let cellFactory = self.cellFactory else {
+            fatalError("No cell factory given")
         }
         
         let cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)

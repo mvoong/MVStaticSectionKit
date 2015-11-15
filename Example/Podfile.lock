@@ -1,7 +1,9 @@
 PODS:
+  - AlecrimCoreData (4.0.2)
   - MVStaticSectionKit (0.1.0)
 
 DEPENDENCIES:
+  - AlecrimCoreData (~> 4.0)
   - MVStaticSectionKit (from `../`)
 
 EXTERNAL SOURCES:
@@ -9,6 +11,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  AlecrimCoreData: 85c2a370f51cf258a0d68ca64f9ed7b0a6021e38
   MVStaticSectionKit: b1e43708ee8cc6e663b7def8812279551e0806e4
 
 COCOAPODS: 0.39.0

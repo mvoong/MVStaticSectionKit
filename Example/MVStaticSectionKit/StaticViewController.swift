@@ -17,7 +17,7 @@ class StaticViewController: UIViewController {
         return tableView.dequeueReusableCellWithIdentifier("Cell" , forIndexPath: indexPath)
     }
     
-    let configureCellFactory: TableConfigureCellType = { cell, object in
+    let configureCell: TableConfigureCellType = { cell, object in
         cell.textLabel?.text = object as? String
     }
 
@@ -27,12 +27,12 @@ class StaticViewController: UIViewController {
         self.dataSource = StaticTableDataSource(tableView: self.tableView)
         self.dataSource
             .addSection("Section 1")
-            .withCellFactory(self.cellFactory, configureCell:self.configureCellFactory)
+            .withCellFactory(self.cellFactory, configureCell:self.configureCell)
             .withItems([ "Test", "Test2", "Test3" ])
         
         self.dataSource
             .addSection("Section 2")
-            .withCellFactory(self.cellFactory, configureCell:self.configureCellFactory)
+            .withCellFactory(self.cellFactory, configureCell:self.configureCell)
             .withItems([ "Test"])
     }
 }

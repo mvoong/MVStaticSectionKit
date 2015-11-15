@@ -3,6 +3,7 @@ use_frameworks!
 
 target 'MVStaticSectionKit_Example', :exclusive => true do
   pod "MVStaticSectionKit", :path => "../"
+  pod 'AlecrimCoreData', '~> 4.0'
 end
 
 target 'MVStaticSectionKit_Tests', :exclusive => true do

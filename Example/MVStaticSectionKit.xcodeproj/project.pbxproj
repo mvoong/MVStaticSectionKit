@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27A7C1171BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 27A7C1151BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodeld */; };
+		27A7C11A1BF8F358004CA88B /* Person+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A7C1181BF8F358004CA88B /* Person+CoreDataProperties.swift */; };
+		27A7C11B1BF8F358004CA88B /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A7C1191BF8F358004CA88B /* Person.swift */; };
+		27A7C11D1BF8F380004CA88B /* FetchedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A7C11C1BF8F380004CA88B /* FetchedViewController.swift */; };
+		27A7C11F1BF8FAA1004CA88B /* MixedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A7C11E1BF8FAA1004CA88B /* MixedViewController.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* StaticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* StaticViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -31,6 +36,11 @@
 		1E5EC1A20DEB504DD62831AF /* Pods-MVStaticSectionKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MVStaticSectionKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-MVStaticSectionKit_Example/Pods-MVStaticSectionKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		2013A1E73889F89F650352F2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		264E11116EB96075E169C5E7 /* Pods_MVStaticSectionKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MVStaticSectionKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27A7C1161BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MVStaticSectionKit_Example.xcdatamodel; sourceTree = "<group>"; };
+		27A7C1181BF8F358004CA88B /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		27A7C1191BF8F358004CA88B /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		27A7C11C1BF8F380004CA88B /* FetchedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedViewController.swift; sourceTree = "<group>"; };
+		27A7C11E1BF8FAA1004CA88B /* MixedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedViewController.swift; sourceTree = "<group>"; };
 		2CBB94954DB0560E96D7D9D9 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		40F9F9BBD386C0FBDB71756F /* Pods-MVStaticSectionKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MVStaticSectionKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MVStaticSectionKit_Tests/Pods-MVStaticSectionKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* MVStaticSectionKit_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVStaticSectionKit_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,8 +92,20 @@
 			isa = PBXGroup;
 			children = (
 				607FACD71AFB9204008FA782 /* StaticViewController.swift */,
+				27A7C11C1BF8F380004CA88B /* FetchedViewController.swift */,
+				27A7C11E1BF8FAA1004CA88B /* MixedViewController.swift */,
 			);
 			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		27A7C1141BF8F322004CA88B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				27A7C1151BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodeld */,
+				27A7C1181BF8F358004CA88B /* Person+CoreDataProperties.swift */,
+				27A7C1191BF8F358004CA88B /* Person.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		607FACC71AFB9204008FA782 = {
@@ -110,6 +132,7 @@
 		607FACD21AFB9204008FA782 /* Example for MVStaticSectionKit */ = {
 			isa = PBXGroup;
 			children = (
+				27A7C1141BF8F322004CA88B /* Model */,
 				27A7C1131BF8E8AA004CA88B /* View Controllers */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
@@ -364,8 +387,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27A7C11B1BF8F358004CA88B /* Person.swift in Sources */,
+				27A7C11A1BF8F358004CA88B /* Person+CoreDataProperties.swift in Sources */,
 				607FACD81AFB9204008FA782 /* StaticViewController.swift in Sources */,
+				27A7C11F1BF8FAA1004CA88B /* MixedViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				27A7C11D1BF8F380004CA88B /* FetchedViewController.swift in Sources */,
+				27A7C1171BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,6 +606,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		27A7C1151BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				27A7C1161BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodel */,
+			);
+			currentVersion = 27A7C1161BF8F332004CA88B /* MVStaticSectionKit_Example.xcdatamodel */;
+			path = MVStaticSectionKit_Example.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }
