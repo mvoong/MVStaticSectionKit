@@ -72,3 +72,59 @@ public class Section : NSObject {
         }
     }
 }
+
+public class TableSection : Section {
+    var cellFactory: TableCellFactoryType!
+    var configureCell: TableConfigureCellType?
+    var sectionViewFactory: TableSectionViewFactoryType?
+    
+    required public init() {
+        super.init()
+    }
+    
+    public func withCellFactory(cellFactory: TableCellFactoryType) -> Self {
+        self.cellFactory = cellFactory
+        
+        return self
+    }
+    
+    public func withConfigureCell(configureCell: TableConfigureCellType) -> Self {
+        self.configureCell = configureCell
+        
+        return self
+    }
+    
+    public func withSectionViewFactory(sectionViewFactory: TableSectionViewFactoryType) -> Self {
+        self.sectionViewFactory = sectionViewFactory
+        
+        return self
+    }
+}
+
+public class CollectionSection : Section {
+    var cellFactory: CollectionCellFactoryType!
+    var configureCell: CollectionConfigureCellType?
+    var sectionViewFactory: CollectionSectionViewFactoryType?
+    
+    public required init() {
+        super.init()
+    }
+    
+    public func withCellFactory(cellFactory: CollectionCellFactoryType) -> Self {
+        self.cellFactory = cellFactory
+        
+        return self
+    }
+    
+    public func withConfigureCell(configureCell: CollectionConfigureCellType) -> Self {
+        self.configureCell = configureCell
+        
+        return self
+    }
+    
+    public func withSectionViewFactory(sectionViewFactory: CollectionSectionViewFactoryType) -> Self {
+        self.sectionViewFactory = sectionViewFactory
+        
+        return self
+    }
+}
