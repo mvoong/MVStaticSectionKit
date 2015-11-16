@@ -74,6 +74,18 @@ public class FetchedTableDataSource : FetchedDataSource {
         self.tableViewAdapter = TableViewAdapter(tableView: tableView, dataSource: self)
         self.resultsControllerDelegate = TableFetchedResultsControllerDelegate(tableView: tableView, resultsController: resultsController, dataSource: self)
     }
+    
+    /**
+     Returns the selected object, or nil if there is no selection
+     
+     - returns: The selected object or nil
+     */
+    public func selectedObject() -> AnyObject? {
+        guard let indexPath = self.tableViewAdapter.tableView?.indexPathForSelectedRow else {
+            return nil
+        }
+        return self.objectAtIndexPath(indexPath)
+    }
 
     public func withCellFactory(cellFactory: TableCellFactoryType) -> Self {
         self.cellFactory = cellFactory
