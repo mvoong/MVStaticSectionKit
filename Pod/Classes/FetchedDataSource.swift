@@ -48,7 +48,7 @@ extension FetchedDataSource : DataSource {
      
      - returns: The original section index, unchanged
      */
-    func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
+    public func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
         return sectionIndex
     }
 }
@@ -74,15 +74,21 @@ public class FetchedTableDataSource : FetchedDataSource {
         self.tableViewAdapter = TableViewAdapter(tableView: tableView, dataSource: self)
         self.resultsControllerDelegate = TableFetchedResultsControllerDelegate(tableView: tableView, resultsController: resultsController, dataSource: self)
     }
-    
-    public func withCellFactory(cellFactory: TableCellFactoryType, configureCell: TableConfigureCellType? = nil) -> Self {
+
+    public func withCellFactory(cellFactory: TableCellFactoryType) -> Self {
         self.cellFactory = cellFactory
-        self.configureCell = configureCell
         
         return self
     }
     
     public func withConfigureCell(configureCell: TableConfigureCellType) -> Self {
+        self.configureCell = configureCell
+        
+        return self
+    }
+    
+    public func withCellFactory(cellFactory: TableCellFactoryType, configureCell: TableConfigureCellType? = nil) -> Self {
+        self.cellFactory = cellFactory
         self.configureCell = configureCell
         
         return self
@@ -96,19 +102,19 @@ public class FetchedTableDataSource : FetchedDataSource {
 }
 
 extension FetchedTableDataSource : TableDataSource {
-    func cellFactoryForSection(sectionIndex: Int) -> TableCellFactoryType {
+    public func cellFactoryForSection(sectionIndex: Int) -> TableCellFactoryType {
         return self.cellFactory!
     }
     
-    func configureCellForSection(sectionIndex: Int) -> TableConfigureCellType? {
+    public func configureCellForSection(sectionIndex: Int) -> TableConfigureCellType? {
         return self.configureCell
     }
     
-    func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType? {
+    public func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType? {
         return self.sectionViewFactory
     }
     
-    func reuseIdentifierForSection(sectionIndex: Int) -> String? {
+    public func reuseIdentifierForSection(sectionIndex: Int) -> String? {
         return self.reuseIdentifier
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-protocol DataSource : NSObjectProtocol {
+public protocol DataSource : NSObjectProtocol {
     func numberOfSections() -> Int
     func numberOfItemsInSection(index: Int) -> Int
     func numberOfItems() -> Int
@@ -21,7 +21,7 @@ protocol DataSource : NSObjectProtocol {
 }
 
 extension DataSource {
-    func isEmpty() -> Bool {
+    public func isEmpty() -> Bool {
         return self.numberOfItems() == 0
     }
 }
@@ -30,7 +30,7 @@ public typealias TableCellFactoryType = (tableView: UITableView, indexPath: NSIn
 public typealias TableConfigureCellType = (cell: UITableViewCell, object: AnyObject) -> Void
 public typealias TableSectionViewFactoryType = (tableView: UITableView, section: TableSection) -> (UITableViewHeaderFooterView)
 
-protocol TableDataSource : NSObjectProtocol, DataSource {
+public protocol TableDataSource : NSObjectProtocol, DataSource {
     func cellFactoryForSection(sectionIndex: Int) -> TableCellFactoryType
     func reuseIdentifierForSection(sectionIndex: Int) -> String?
     func configureCellForSection(sectionIndex: Int) -> TableConfigureCellType?
@@ -41,7 +41,7 @@ public typealias CollectionCellFactoryType = (collectionView: UICollectionView, 
 public typealias CollectionConfigureCellType = (cell: UICollectionViewCell, object: AnyObject) -> Void
 public typealias CollectionSectionViewFactoryType = (collectionView: UICollectionView, section: CollectionSection) -> (UICollectionReusableView)
 
-protocol CollectionDataSource : NSObjectProtocol, DataSource {
+public protocol CollectionDataSource : NSObjectProtocol, DataSource {
     func cellFactoryForSection(sectionIndex: Int) -> CollectionCellFactoryType
     func configureCellForSection(sectionIndex: Int) -> CollectionConfigureCellType?
     func sectionViewFactoryForSection(sectionIndex: Int) -> CollectionSectionViewFactoryType?

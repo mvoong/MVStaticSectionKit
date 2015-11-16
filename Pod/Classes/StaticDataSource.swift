@@ -175,7 +175,7 @@ extension StaticDataSource : DataSource {
     /**
      Maps the section for the results controller to the actual UITableView section
      */
-    func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
+    public func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
         return self.sectionIndexForFetchedResultsController(resultsController)!
     }
 }
