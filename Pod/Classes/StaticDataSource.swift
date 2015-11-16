@@ -15,9 +15,9 @@ public class StaticDataSource<S: Section> : NSObject {
     /**
      The static sections
      */
-    lazy var sections = [S]()
+    private lazy var sections = [S]()
     
-    lazy var resultsControllerDelegates = [NSFetchedResultsController: NSFetchedResultsControllerDelegate]()
+    private lazy var resultsControllerDelegates = [NSFetchedResultsController: NSFetchedResultsControllerDelegate]()
 
     /**
      Add an empty `Section` to the receiver
@@ -79,7 +79,7 @@ public class StaticDataSource<S: Section> : NSObject {
      
      - returns: The `Section`, or nil if no section exists at that index
      */
-    public func sectionForIndex(index: Int) -> S? {
+    func sectionForIndex(index: Int) -> S? {
         return self.sections[index]
     }
     
@@ -89,7 +89,7 @@ public class StaticDataSource<S: Section> : NSObject {
      - parameter resultsController: The results controller to search the sections for
      - returns: The index of the found `Section`
      */
-    public func sectionIndexForFetchedResultsController(resultsController: NSFetchedResultsController) -> Int? {
+    func sectionIndexForFetchedResultsController(resultsController: NSFetchedResultsController) -> Int? {
         if let section = self.sectionForFetchedResultsController(resultsController) {
             return self.sectionIndexForSection(section)
         }
@@ -103,7 +103,7 @@ public class StaticDataSource<S: Section> : NSObject {
      - parameter resultsController: The results controller to search the sections for
      - returns: The found `Section`
      */
-    public func sectionForFetchedResultsController(resultsController: NSFetchedResultsController) -> S? {
+    func sectionForFetchedResultsController(resultsController: NSFetchedResultsController) -> S? {
         for section in self.sections {
             if section.fetchedResultsController == resultsController {
                 return section
@@ -117,7 +117,7 @@ public class StaticDataSource<S: Section> : NSObject {
      
      - parameter section: The `Section` to search for
      */
-    public func sectionIndexForSection(section: S) -> Int? {
+    func sectionIndexForSection(section: S) -> Int? {
         return self.sections.indexOf(section)
     }
     
@@ -164,19 +164,19 @@ extension StaticDataSource : DataSource {
         return self.sections[indexPath.section].objectAtIndex(indexPath.row)
     }
     
-    /**
-     Maps the section for the results controller to the actual UITableView section
-     */
-    public func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
-        return self.sectionIndexForFetchedResultsController(resultsController)!
-    }
-    
     public func titleForSection(index: Int) -> String? {
         return self.sectionForIndex(index)?.title
     }
     
     public func footerTitleForSection(index: Int) -> String? {
         return self.sectionForIndex(index)?.footerTitle
+    }
+    
+    /**
+     Maps the section for the results controller to the actual UITableView section
+     */
+    func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
+        return self.sectionIndexForFetchedResultsController(resultsController)!
     }
 }
 
@@ -209,46 +209,7 @@ public class StaticTableDataSource : StaticDataSource<TableSection> {
         }
         return self.objectAtIndexPath(indexPath)
     }
-    
-    // MARK: UITableViewDataSource
-    
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.numberOfSections()
-    }
-    
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.sectionForIndex(section)?.numberOfItems() ?? 0
-    }
-    
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let object = self.objectAtIndexPath(indexPath),
-            section = self.sectionForIndex(indexPath.section) else {
-            fatalError("Invalid section: \(indexPath)")
-        }
 
-        var cell: UITableViewCell?
-        
-        if let reuseIdentifier = section.reuseIdentifier {
-            cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
-        } else if let cellFactory = section.cellFactory {
-            cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
-        }
-        
-        if let configureCell = section.configureCell {
-            configureCell(cell: cell!, object: object)
-        }
-        
-        return cell!
-    }
-    
-    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.titleForSection(section)
-    }
-    
-    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return self.footerTitleForSection(section)
-    }
-    
     override func updateResultsControllerDelegates() {
         for section in self.sections {
             if let tableView = self.tableView, resultsController = section.fetchedResultsController {
@@ -256,12 +217,6 @@ public class StaticTableDataSource : StaticDataSource<TableSection> {
                     self.resultsControllerDelegates[resultsController] = TableFetchedResultsControllerDelegate(tableView: tableView, resultsController: resultsController, dataSource: self)
                 }
             }
-        }
-    }
-    
-    deinit {
-        if self.tableView?.dataSource === self {
-            self.tableView?.dataSource = nil
         }
     }
 }

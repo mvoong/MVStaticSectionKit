@@ -35,15 +35,6 @@ extension FetchedDataSource : DataSource {
         return self.resultsController.objectAtIndexPath(indexPath)
     }
     
-    /**
-     No change in mapping required, as the results controller sections matches the `UITableView` sections
-     
-     - returns: The original section index, unchanged
-     */
-    public func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
-        return sectionIndex
-    }
-    
     public func titleForSection(index: Int) -> String? {
         return self.resultsController.sections?[index].name
     }
@@ -51,18 +42,26 @@ extension FetchedDataSource : DataSource {
     public func footerTitleForSection(index: Int) -> String? {
         return nil
     }
+    
+    /**
+     No change in mapping required, as the results controller sections matches the `UITableView` sections
+     
+     - returns: The original section index, unchanged
+     */
+    func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
+        return sectionIndex
+    }
 }
 
 // MARK: FetchedTableDataSource
 
 public class FetchedTableDataSource : FetchedDataSource {
-    var tableViewAdapter: TableViewAdapter!
-    
-    var cellFactory: TableCellFactoryType!
-    var configureCell: TableConfigureCellType?
-    var sectionViewFactory: TableSectionViewFactoryType?
-    var resultsControllerDelegate: TableFetchedResultsControllerDelegate?
-    var reuseIdentifier: String?
+    private var tableViewAdapter: TableViewAdapter!
+    private var cellFactory: TableCellFactoryType!
+    private var configureCell: TableConfigureCellType?
+    private var sectionViewFactory: TableSectionViewFactoryType?
+    private var resultsControllerDelegate: TableFetchedResultsControllerDelegate?
+    private var reuseIdentifier: String?
     
     /**
      Initialises the data source with a given table. A weak reference is made to the table view.
@@ -97,19 +96,19 @@ public class FetchedTableDataSource : FetchedDataSource {
 }
 
 extension FetchedTableDataSource : TableDataSource {
-    public func cellFactoryForSection(sectionIndex: Int) -> TableCellFactoryType {
+    func cellFactoryForSection(sectionIndex: Int) -> TableCellFactoryType {
         return self.cellFactory!
     }
     
-    public func configureCellForSection(sectionIndex: Int) -> TableConfigureCellType? {
+    func configureCellForSection(sectionIndex: Int) -> TableConfigureCellType? {
         return self.configureCell
     }
     
-    public func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType? {
+    func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType? {
         return self.sectionViewFactory
     }
     
-    public func reuseIdentifierForSection(sectionIndex: Int) -> String? {
+    func reuseIdentifierForSection(sectionIndex: Int) -> String? {
         return self.reuseIdentifier
     }
 }

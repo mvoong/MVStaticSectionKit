@@ -54,7 +54,7 @@ class TableViewAdapter : NSObject, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return self.dataSource?.titleForSection(section)
+        return self.dataSource?.footerTitleForSection(section)
     }
     
     deinit {

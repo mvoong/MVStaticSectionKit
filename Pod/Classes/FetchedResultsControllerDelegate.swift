@@ -9,7 +9,7 @@
 import CoreData
 import UIKit
 
-public class FetchedResultsControllerDelegate : NSObject {
+class FetchedResultsControllerDelegate : NSObject {
     typealias ObjectChangeTuple = (changeType: NSFetchedResultsChangeType, indexPaths: [NSIndexPath])
     
     var objectChanges = [ObjectChangeTuple]()
@@ -21,6 +21,7 @@ public class FetchedResultsControllerDelegate : NSObject {
         super.init()
         
         self.resultsController = resultsController
+        try! resultsController.performFetch()
     }
     
     deinit {
@@ -30,11 +31,11 @@ public class FetchedResultsControllerDelegate : NSObject {
     }
 }
 
-public class TableFetchedResultsControllerDelegate : FetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate {
-    weak var tableView: UITableView?
-    weak var dataSource: TableDataSource?
+class TableFetchedResultsControllerDelegate : FetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate {
+    private weak var tableView: UITableView?
+    private weak var dataSource: TableDataSource?
     
-    public init(tableView: UITableView, resultsController: NSFetchedResultsController, dataSource: TableDataSource) {
+    init(tableView: UITableView, resultsController: NSFetchedResultsController, dataSource: TableDataSource) {
         super.init(resultsController: resultsController)
         
         self.tableView = tableView
@@ -43,11 +44,11 @@ public class TableFetchedResultsControllerDelegate : FetchedResultsControllerDel
         resultsController.delegate = self
     }
     
-    public func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
         self.tableView?.beginUpdates()
     }
     
-    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
             if let newIndexPath = newIndexPath,
@@ -75,7 +76,7 @@ public class TableFetchedResultsControllerDelegate : FetchedResultsControllerDel
         }
     }
     
-    public func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         switch type {
         case .Insert:
             if let sectionIndex = self.dataSource?.convertSectionForResultsController(controller, sectionIndex: sectionIndex) {
@@ -90,7 +91,7 @@ public class TableFetchedResultsControllerDelegate : FetchedResultsControllerDel
         }
     }
     
-    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
         self.tableView?.endUpdates()
         
         self.updatedObjects.removeAll()
@@ -98,11 +99,11 @@ public class TableFetchedResultsControllerDelegate : FetchedResultsControllerDel
     }
 }
 
-public class CollectionFetchedResultsControllerDelegate : FetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate {
+class CollectionFetchedResultsControllerDelegate : FetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate {
     weak var collectionView: UICollectionView?
     weak var dataSource: CollectionDataSource?
     
-    public init(collectionView: UICollectionView, resultsController: NSFetchedResultsController, dataSource: CollectionDataSource) {
+    init(collectionView: UICollectionView, resultsController: NSFetchedResultsController, dataSource: CollectionDataSource) {
         super.init(resultsController: resultsController)
         
         self.collectionView = collectionView
@@ -111,7 +112,7 @@ public class CollectionFetchedResultsControllerDelegate : FetchedResultsControll
         resultsController.delegate = self
     }
     
-    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
             if let newIndexPath = newIndexPath,
@@ -138,11 +139,11 @@ public class CollectionFetchedResultsControllerDelegate : FetchedResultsControll
         }
     }
     
-    public func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         
     }
     
-    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
         self.collectionView?.performBatchUpdates({
             for (changeType, indexPaths) in self.objectChanges {
                 switch(changeType) {
@@ -167,7 +168,7 @@ public class CollectionFetchedResultsControllerDelegate : FetchedResultsControll
                     }
                 }
             }
-            }, completion: { finished in
+        }, completion: { finished in
                 self.updatedObjects.removeAll()
                 self.objectChanges.removeAll()
         })
