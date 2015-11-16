@@ -10,6 +10,7 @@ import CoreData
 
 public class Section : NSObject {
     public var title: String?
+    public var footerTitle: String?
     public var items = [AnyObject]()
     public var reuseIdentifier: String?
     
@@ -40,6 +41,7 @@ public class Section : NSObject {
     
     public func withResultsController(resultsController: NSFetchedResultsController) -> Self {
         self.fetchedResultsController = resultsController
+        try! resultsController.performFetch()
         
         return self
     }
@@ -52,6 +54,12 @@ public class Section : NSObject {
     
     public func withReuseIdentifier(reuseIdentifier: String) -> Self {
         self.reuseIdentifier = reuseIdentifier
+        
+        return self
+    }
+    
+    public func withFooterTitle(title: String) -> Self {
+        self.footerTitle = title
         
         return self
     }
@@ -81,7 +89,7 @@ public class Section : NSObject {
 }
 
 public class TableSection : Section {
-    var cellFactory: TableCellFactoryType!
+    var cellFactory: TableCellFactoryType?
     var configureCell: TableConfigureCellType?
     var sectionViewFactory: TableSectionViewFactoryType?
     
@@ -118,9 +126,9 @@ public class CollectionSection : Section {
         super.init()
     }
     
-    public func withCellFactory(cellFactory: CollectionCellFactoryType) -> Self {
+    public func withCellFactory(cellFactory: CollectionCellFactoryType, configureCell: CollectionConfigureCellType? = nil) -> Self {
         self.cellFactory = cellFactory
-        self.reuseIdentifier = nil
+        self.configureCell = configureCell
         
         return self
     }

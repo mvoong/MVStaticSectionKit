@@ -170,12 +170,21 @@ extension StaticDataSource : DataSource {
     public func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
         return self.sectionIndexForFetchedResultsController(resultsController)!
     }
+    
+    public func titleForSection(index: Int) -> String? {
+        return self.sectionForIndex(index)?.title
+    }
+    
+    public func footerTitleForSection(index: Int) -> String? {
+        return self.sectionForIndex(index)?.footerTitle
+    }
 }
 
 // MARK: StaticTableDataSource
 
-public class StaticTableDataSource : StaticDataSource<TableSection>, UITableViewDataSource {
+public class StaticTableDataSource : StaticDataSource<TableSection> {
     weak var tableView: UITableView?
+    var tableViewAdapter: TableViewAdapter!
     
     /**
      Initialises the data source with a given table. A weak reference is made to the table view.
@@ -184,8 +193,9 @@ public class StaticTableDataSource : StaticDataSource<TableSection>, UITableView
      */
     public init(tableView: UITableView) {
         super.init()
+        
         self.tableView = tableView
-        tableView.dataSource = self
+        self.tableViewAdapter = TableViewAdapter(tableView: tableView, dataSource: self)
     }
     
     /**
@@ -232,7 +242,11 @@ public class StaticTableDataSource : StaticDataSource<TableSection>, UITableView
     }
     
     public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.sectionForIndex(section)?.title
+        return self.titleForSection(section)
+    }
+    
+    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return self.footerTitleForSection(section)
     }
     
     override func updateResultsControllerDelegates() {
@@ -264,43 +278,24 @@ extension StaticTableDataSource : TableDataSource {
     public func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType? {
         return self.sectionForIndex(sectionIndex)?.sectionViewFactory
     }
+    
+    public func reuseIdentifierForSection(sectionIndex: Int) -> String? {
+        return self.sectionForIndex(sectionIndex)?.reuseIdentifier
+    }
 }
 
 // MARK: StaticCollectionDataSource
 
-public class StaticCollectionDataSource : StaticDataSource<CollectionSection>, UICollectionViewDataSource {
+public class StaticCollectionDataSource : StaticDataSource<CollectionSection> {
     weak var collectionView: UICollectionView?
+    var collectionViewAdapter: CollectionViewAdapter!
     
     public init(collectionView: UICollectionView) {
         super.init()
         
         self.collectionView = collectionView
-        collectionView.dataSource = self
-    }
-    
-    // MARK: UICollectionViewDataSource
-    
-    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.sections.count
-    }
-    
-    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.sections[section].numberOfItems()
-    }
-    
-    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        guard let object = self.objectAtIndexPath(indexPath),
-            section = self.sectionForIndex(indexPath.section) else {
-                fatalError("Invalid section: \(indexPath)")
-        }
         
-        let cell = section.cellFactory(collectionView: collectionView, indexPath: indexPath, object: object)
-        
-        if let configureCell = section.configureCell {
-            configureCell(cell: cell, object: object)
-        }
-        
-        return cell
+        self.collectionViewAdapter = CollectionViewAdapter(collectionView: collectionView, dataSource: self)
     }
     
     override func updateResultsControllerDelegates() {
@@ -310,12 +305,6 @@ public class StaticCollectionDataSource : StaticDataSource<CollectionSection>, U
                     self.resultsControllerDelegates[resultsController] = CollectionFetchedResultsControllerDelegate(collectionView: collectionView, resultsController: resultsController, dataSource: self)
                 }
             }
-        }
-    }
-
-    deinit {
-        if self.collectionView?.dataSource === self {
-            self.collectionView?.dataSource = nil
         }
     }
 }

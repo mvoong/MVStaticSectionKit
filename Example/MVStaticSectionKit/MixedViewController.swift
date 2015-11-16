@@ -40,7 +40,6 @@ class MixedViewController: UIViewController {
         
         // Section driven from fetched results controller
         let resultsController = self.dataContext.people.sortByAttributeName("name").toFetchedResultsController()
-        try! resultsController.performFetch()
         
         self.dataSource
             .addSection("Fetched Results Controller Section")

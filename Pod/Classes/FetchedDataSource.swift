@@ -43,12 +43,20 @@ extension FetchedDataSource : DataSource {
     public func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int {
         return sectionIndex
     }
+    
+    public func titleForSection(index: Int) -> String? {
+        return self.resultsController.sections?[index].name
+    }
+    
+    public func footerTitleForSection(index: Int) -> String? {
+        return nil
+    }
 }
 
 // MARK: FetchedTableDataSource
 
 public class FetchedTableDataSource : FetchedDataSource {
-    weak var tableView: UITableView?
+    var tableViewAdapter: TableViewAdapter!
     
     var cellFactory: TableCellFactoryType!
     var configureCell: TableConfigureCellType?
@@ -64,9 +72,7 @@ public class FetchedTableDataSource : FetchedDataSource {
     public init(tableView: UITableView, resultsController: NSFetchedResultsController) {
         super.init(resultsController: resultsController)
         
-        self.tableView = tableView
-        tableView.dataSource = self
-        
+        self.tableViewAdapter = TableViewAdapter(tableView: tableView, dataSource: self)
         self.resultsControllerDelegate = TableFetchedResultsControllerDelegate(tableView: tableView, resultsController: resultsController, dataSource: self)
     }
     
@@ -88,42 +94,6 @@ public class FetchedTableDataSource : FetchedDataSource {
         
         return self
     }
-
-    deinit {
-        if self.tableView?.dataSource === self {
-            self.tableView?.dataSource = nil
-        }
-    }
-}
-
-extension FetchedTableDataSource : UITableViewDataSource {
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.numberOfSections()
-    }
-    
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.numberOfItemsInSection(section)
-    }
-    
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let object = self.objectAtIndexPath(indexPath) else {
-            fatalError("Invalid section: \(indexPath)")
-        }
-        
-        var cell: UITableViewCell?
-
-        if let reuseIdentifier = self.reuseIdentifier {
-            cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
-        } else if let cellFactory = self.cellFactory {
-            cell = cellFactory(tableView: tableView, indexPath: indexPath, object: object)
-        }
-        
-        if let configureCell = self.configureCell {
-            configureCell(cell: cell!, object: object)
-        }
-        
-        return cell!
-    }
 }
 
 extension FetchedTableDataSource : TableDataSource {
@@ -137,5 +107,9 @@ extension FetchedTableDataSource : TableDataSource {
     
     public func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType? {
         return self.sectionViewFactory
+    }
+    
+    public func reuseIdentifierForSection(sectionIndex: Int) -> String? {
+        return self.reuseIdentifier
     }
 }

@@ -9,11 +9,13 @@
 import UIKit
 import CoreData
 
-public protocol DataSource {
+public protocol DataSource : NSObjectProtocol {
     func numberOfSections() -> Int
     func numberOfItemsInSection(index: Int) -> Int
     func numberOfItems() -> Int
     func isEmpty() -> Bool
+    func titleForSection(index: Int) -> String?
+    func footerTitleForSection(index: Int) -> String?
     func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject?
     func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int
 }
@@ -28,8 +30,9 @@ public typealias TableCellFactoryType = (tableView: UITableView, indexPath: NSIn
 public typealias TableConfigureCellType = (cell: UITableViewCell, object: AnyObject) -> Void
 public typealias TableSectionViewFactoryType = (tableView: UITableView, section: TableSection) -> (UITableViewHeaderFooterView)
 
-public protocol TableDataSource : class, DataSource {
+public protocol TableDataSource : NSObjectProtocol, DataSource {
     func cellFactoryForSection(sectionIndex: Int) -> TableCellFactoryType
+    func reuseIdentifierForSection(sectionIndex: Int) -> String?
     func configureCellForSection(sectionIndex: Int) -> TableConfigureCellType?
     func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType?
 }
@@ -38,7 +41,7 @@ public typealias CollectionCellFactoryType = (collectionView: UICollectionView, 
 public typealias CollectionConfigureCellType = (cell: UICollectionViewCell, object: AnyObject) -> Void
 public typealias CollectionSectionViewFactoryType = (collectionView: UICollectionView, section: CollectionSection) -> (UICollectionReusableView)
 
-public protocol CollectionDataSource : class, DataSource {
+public protocol CollectionDataSource : NSObjectProtocol, DataSource {
     func cellFactoryForSection(sectionIndex: Int) -> CollectionCellFactoryType
     func configureCellForSection(sectionIndex: Int) -> CollectionConfigureCellType?
     func sectionViewFactoryForSection(sectionIndex: Int) -> CollectionSectionViewFactoryType?

@@ -26,7 +26,6 @@ class FetchedViewController: UIViewController {
         createTestData()
         
         let resultsController = self.dataContext.people.sortByAttributeName("name").toFetchedResultsController()
-        try! resultsController.performFetch()
         
         self.dataSource = FetchedTableDataSource(tableView: self.tableView, resultsController: resultsController)
             .withReuseIdentifier("Cell")
