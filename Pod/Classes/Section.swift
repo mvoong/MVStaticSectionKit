@@ -11,7 +11,7 @@ import CoreData
 public class Section : NSObject {
     public var title: String?
     public var footerTitle: String?
-    public var items = [AnyObject]()
+    public var items = [Any]()
     public var reuseIdentifier: String?
     
     var resultsControllerChanged: (() -> Void)?
@@ -34,7 +34,7 @@ public class Section : NSObject {
         self.fetchedResultsController = fetchedResultsController
     }
     
-    public init(_ title: String, items: [AnyObject]) {
+    public init(_ title: String, items: [Any]) {
         self.title = title
         self.items = items
     }
@@ -46,7 +46,7 @@ public class Section : NSObject {
         return self
     }
     
-    public func withItems(items: [AnyObject]) -> Self {
+    public func withItems(items: [Any]) -> Self {
         self.items = items
         
         return self
@@ -64,11 +64,11 @@ public class Section : NSObject {
         return self
     }
     
-    public func addItem(item: AnyObject) {
+    public func addItem(item: Any) {
         self.items.append(item)
     }
     
-    public func objectAtIndex(index: Int) -> AnyObject? {
+    public func objectAtIndex(index: Int) -> Any? {
         if let controller = self.fetchedResultsController {
             let indexPath = NSIndexPath(forItem: index, inSection: 0)
             return controller.objectAtIndexPath(indexPath)

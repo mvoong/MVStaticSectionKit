@@ -160,7 +160,7 @@ extension StaticDataSource : DataSource {
      
      - returns: The object, or nil if there is no object at the specified index path
      */
-    public func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject? {
+    public func objectAtIndexPath(indexPath: NSIndexPath) -> Any? {
         return self.sections[indexPath.section].objectAtIndex(indexPath.row)
     }
     
@@ -203,7 +203,7 @@ public class StaticTableDataSource : StaticDataSource<TableSection> {
      
      - returns: The selected object or nil
      */
-    public func selectedObject() -> AnyObject? {
+    public func selectedObject() -> Any? {
         guard let indexPath = self.tableView?.indexPathForSelectedRow else {
             return nil
         }

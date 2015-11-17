@@ -16,7 +16,7 @@ public protocol DataSource : NSObjectProtocol {
     func isEmpty() -> Bool
     func titleForSection(index: Int) -> String?
     func footerTitleForSection(index: Int) -> String?
-    func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject?
+    func objectAtIndexPath(indexPath: NSIndexPath) -> Any?
     func convertSectionForResultsController(resultsController: NSFetchedResultsController, sectionIndex: Int) -> Int
 }
 
@@ -26,8 +26,8 @@ extension DataSource {
     }
 }
 
-public typealias TableCellFactoryType = (tableView: UITableView, indexPath: NSIndexPath, object: AnyObject) -> (UITableViewCell)
-public typealias TableConfigureCellType = (cell: UITableViewCell, object: AnyObject) -> Void
+public typealias TableCellFactoryType = (tableView: UITableView, indexPath: NSIndexPath, object: Any) -> (UITableViewCell)
+public typealias TableConfigureCellType = (cell: UITableViewCell, object: Any) -> Void
 public typealias TableSectionViewFactoryType = (tableView: UITableView, section: TableSection) -> (UITableViewHeaderFooterView)
 
 public protocol TableDataSource : NSObjectProtocol, DataSource {
@@ -37,8 +37,8 @@ public protocol TableDataSource : NSObjectProtocol, DataSource {
     func sectionViewFactoryForSection(sectionIndex: Int) -> TableSectionViewFactoryType?
 }
 
-public typealias CollectionCellFactoryType = (collectionView: UICollectionView, indexPath: NSIndexPath, object: AnyObject) -> (UICollectionViewCell)
-public typealias CollectionConfigureCellType = (cell: UICollectionViewCell, object: AnyObject) -> Void
+public typealias CollectionCellFactoryType = (collectionView: UICollectionView, indexPath: NSIndexPath, object: Any) -> (UICollectionViewCell)
+public typealias CollectionConfigureCellType = (cell: UICollectionViewCell, object: Any) -> Void
 public typealias CollectionSectionViewFactoryType = (collectionView: UICollectionView, section: CollectionSection) -> (UICollectionReusableView)
 
 public protocol CollectionDataSource : NSObjectProtocol, DataSource {

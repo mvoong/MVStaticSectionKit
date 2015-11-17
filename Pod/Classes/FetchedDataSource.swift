@@ -31,7 +31,7 @@ extension FetchedDataSource : DataSource {
         return self.resultsController.sections?[index].numberOfObjects ?? 0
     }
     
-    public func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject? {
+    public func objectAtIndexPath(indexPath: NSIndexPath) -> Any? {
         return self.resultsController.objectAtIndexPath(indexPath)
     }
     
@@ -80,7 +80,7 @@ public class FetchedTableDataSource : FetchedDataSource {
      
      - returns: The selected object or nil
      */
-    public func selectedObject() -> AnyObject? {
+    public func selectedObject() -> Any? {
         guard let indexPath = self.tableViewAdapter.tableView?.indexPathForSelectedRow else {
             return nil
         }
