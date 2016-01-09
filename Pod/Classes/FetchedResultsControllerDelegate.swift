@@ -25,8 +25,8 @@ class FetchedResultsControllerDelegate : NSObject {
     }
     
     deinit {
-        if self.resultsController?.delegate === self {
-            self.resultsController?.delegate = nil
+        if resultsController?.delegate === self {
+            resultsController?.delegate = nil
         }
     }
 }
@@ -169,8 +169,8 @@ class CollectionFetchedResultsControllerDelegate : FetchedResultsControllerDeleg
                 }
             }
         }, completion: { finished in
-                self.updatedObjects.removeAll()
-                self.objectChanges.removeAll()
+            self.updatedObjects.removeAll()
+            self.objectChanges.removeAll()
         })
     }
 }

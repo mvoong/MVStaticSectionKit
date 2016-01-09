@@ -130,3 +130,81 @@ extension FetchedTableDataSource : TableDataSource {
         return self.reuseIdentifier
     }
 }
+
+// MARK: FetchedCollectionDataSource
+
+public class FetchedCollectionDataSource : FetchedDataSource {
+    private var collectionViewAdapter: CollectionViewAdapter!
+    private var cellFactory: CollectionCellFactoryType!
+    private var configureCell: CollectionConfigureCellType?
+    private var sectionViewFactory: CollectionSectionViewFactoryType?
+    private var resultsControllerDelegate: CollectionFetchedResultsControllerDelegate?
+    private var reuseIdentifier: String?
+    
+    /**
+     Initialises the data source with a given collection view. A weak reference is made to the collection view.
+     
+     - parameter view: The table view
+     */
+    public init(collectionView: UICollectionView, resultsController: NSFetchedResultsController) {
+        super.init(resultsController: resultsController)
+        
+        self.collectionViewAdapter = CollectionViewAdapter(collectionView: collectionView, dataSource: self)
+        self.resultsControllerDelegate = CollectionFetchedResultsControllerDelegate(collectionView: collectionView, resultsController: resultsController, dataSource: self)
+    }
+    
+    /**
+     Returns the selected object, or nil if there is no selection
+     
+     - returns: The selected object or nil
+     */
+    public func selectedObject() -> Any? {
+        guard let indexPaths = self.collectionViewAdapter.collectionView?.indexPathsForSelectedItems() else {
+            return nil
+        }
+        return self.objectAtIndexPath(indexPaths.first!)
+    }
+    
+    public func withCellFactory(cellFactory: CollectionCellFactoryType) -> Self {
+        self.cellFactory = cellFactory
+        
+        return self
+    }
+    
+    public func withConfigureCell(configureCell: CollectionConfigureCellType) -> Self {
+        self.configureCell = configureCell
+        
+        return self
+    }
+    
+    public func withCellFactory(cellFactory: CollectionCellFactoryType, configureCell: CollectionConfigureCellType? = nil) -> Self {
+        self.cellFactory = cellFactory
+        self.configureCell = configureCell
+        
+        return self
+    }
+    
+    public func withReuseIdentifier(reuseIdentifier: String) -> Self {
+        self.reuseIdentifier = reuseIdentifier
+        
+        return self
+    }
+}
+
+extension FetchedCollectionDataSource : CollectionDataSource {
+    public func cellFactoryForSection(sectionIndex: Int) -> CollectionCellFactoryType {
+        return self.cellFactory!
+    }
+    
+    public func configureCellForSection(sectionIndex: Int) -> CollectionConfigureCellType? {
+        return self.configureCell
+    }
+    
+    public func sectionViewFactoryForSection(sectionIndex: Int) -> CollectionSectionViewFactoryType? {
+        return self.sectionViewFactory
+    }
+    
+    public func reuseIdentifierForSection(sectionIndex: Int) -> String? {
+        return self.reuseIdentifier
+    }
+}
