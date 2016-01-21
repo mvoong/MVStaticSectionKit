@@ -249,7 +249,6 @@ public class StaticCollectionDataSource : StaticDataSource<CollectionSection> {
         super.init()
         
         self.collectionView = collectionView
-        
         self.collectionViewAdapter = CollectionViewAdapter(collectionView: collectionView, dataSource: self)
     }
     
@@ -271,6 +270,10 @@ extension StaticCollectionDataSource : CollectionDataSource {
     
     public func configureCellForSection(sectionIndex: Int) -> CollectionConfigureCellType? {
         return self.sectionForIndex(sectionIndex)?.configureCell
+    }
+    
+    public func emptyCellFactoryForSection(sectionIndex: Int) -> CollectionEmptyCellFactoryType? {
+        return self.sectionForIndex(sectionIndex)?.emptyCellFactory
     }
     
     public func sectionViewFactoryForSection(sectionIndex: Int) -> CollectionSectionViewFactoryType? {

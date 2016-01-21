@@ -136,6 +136,7 @@ extension FetchedTableDataSource : TableDataSource {
 public class FetchedCollectionDataSource : FetchedDataSource {
     private var collectionViewAdapter: CollectionViewAdapter!
     private var cellFactory: CollectionCellFactoryType!
+    private var emptyCellFactory: CollectionEmptyCellFactoryType!
     private var configureCell: CollectionConfigureCellType?
     private var sectionViewFactory: CollectionSectionViewFactoryType?
     private var resultsControllerDelegate: CollectionFetchedResultsControllerDelegate?
@@ -184,6 +185,12 @@ public class FetchedCollectionDataSource : FetchedDataSource {
         return self
     }
     
+    public func withEmptyCellFactory(cellFactory: CollectionEmptyCellFactoryType) -> Self {
+        self.emptyCellFactory = cellFactory
+        
+        return self
+    }
+    
     public func withReuseIdentifier(reuseIdentifier: String) -> Self {
         self.reuseIdentifier = reuseIdentifier
         
@@ -198,6 +205,10 @@ extension FetchedCollectionDataSource : CollectionDataSource {
     
     public func configureCellForSection(sectionIndex: Int) -> CollectionConfigureCellType? {
         return self.configureCell
+    }
+    
+    public func emptyCellFactoryForSection(sectionIndex: Int) -> CollectionEmptyCellFactoryType? {
+        return self.emptyCellFactory
     }
     
     public func sectionViewFactoryForSection(sectionIndex: Int) -> CollectionSectionViewFactoryType? {

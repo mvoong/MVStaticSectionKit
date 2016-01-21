@@ -102,6 +102,7 @@ class TableFetchedResultsControllerDelegate : FetchedResultsControllerDelegate, 
 class CollectionFetchedResultsControllerDelegate : FetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate {
     weak var collectionView: UICollectionView?
     weak var dataSource: CollectionDataSource?
+    var showEmptyCell = false
     
     init(collectionView: UICollectionView, resultsController: NSFetchedResultsController, dataSource: CollectionDataSource) {
         super.init(resultsController: resultsController)
@@ -112,17 +113,35 @@ class CollectionFetchedResultsControllerDelegate : FetchedResultsControllerDeleg
         resultsController.delegate = self
     }
     
+    func showEmptyCellAtSection(sectionIndex: Int) -> Bool {
+        return dataSource?.isSectionEmpty(sectionIndex) == true && dataSource?.emptyCellFactoryForSection(sectionIndex) != nil
+    }
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        showEmptyCell = self.dataSource?.isSectionEmpty(0) == true
+    }
+    
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
             if let newIndexPath = newIndexPath,
                 sectionIndex = self.dataSource?.convertSectionForResultsController(controller, sectionIndex: newIndexPath.section) {
-                    self.objectChanges.append((type, [(NSIndexPath(forItem: newIndexPath.row, inSection: sectionIndex))]))
+                    if newIndexPath.row == 0 && showEmptyCell {
+                        // First object inserted, "empty cell" is replaced by "object cell"
+                        self.objectChanges.append((.Update, [(NSIndexPath(forItem: newIndexPath.row, inSection: sectionIndex))]))
+                    } else {
+                        self.objectChanges.append((type, [(NSIndexPath(forItem: newIndexPath.row, inSection: sectionIndex))]))
+                    }
             }
         case .Delete:
             if let indexPath = indexPath,
                 sectionIndex = self.dataSource?.convertSectionForResultsController(controller, sectionIndex: indexPath.section) {
-                    self.objectChanges.append((type, [(NSIndexPath(forItem: indexPath.row, inSection: sectionIndex))]))
+                    // Last object removed, "cell" is replaced by "placeholder cell"
+                    if showEmptyCellAtSection(sectionIndex) {
+                        self.objectChanges.append((.Update, [(NSIndexPath(forItem: indexPath.row, inSection: sectionIndex))]))
+                    } else {
+                        self.objectChanges.append((type, [(NSIndexPath(forItem: indexPath.row, inSection: sectionIndex))]))
+                    }
             }
         case .Update:
             if let indexPath = indexPath,
@@ -152,11 +171,15 @@ class CollectionFetchedResultsControllerDelegate : FetchedResultsControllerDeleg
                 case .Delete:
                     self.collectionView?.deleteItemsAtIndexPaths(indexPaths)
                 case .Update:
+                    // Reconfigure cell if item represents an object
                     if let indexPath = indexPaths.first,
                         object = self.updatedObjects[indexPath],
                         cell = self.collectionView?.cellForItemAtIndexPath(indexPath),
                         configureCell = self.dataSource?.configureCellForSection(indexPath.section) {
                             configureCell(cell: cell, object: object)
+                    } else {
+                        // Reload item, e.g. if it changed into an empty cell
+                        self.collectionView?.reloadItemsAtIndexPaths(indexPaths)
                     }
                 case .Move:
                     if let deleteIndexPath = indexPaths.first {

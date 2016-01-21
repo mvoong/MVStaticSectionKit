@@ -24,6 +24,10 @@ extension DataSource {
     public func isEmpty() -> Bool {
         return self.numberOfItems() == 0
     }
+    
+    public func isSectionEmpty(sectionIndex: Int) -> Bool {
+        return self.numberOfItemsInSection(sectionIndex) == 0
+    }
 }
 
 public typealias TableCellFactoryType = (tableView: UITableView, indexPath: NSIndexPath, object: Any) -> (UITableViewCell)
@@ -38,11 +42,13 @@ public protocol TableDataSource : NSObjectProtocol, DataSource {
 }
 
 public typealias CollectionCellFactoryType = (collectionView: UICollectionView, indexPath: NSIndexPath, object: Any) -> (UICollectionViewCell)
+public typealias CollectionEmptyCellFactoryType = (collectionView: UICollectionView, indexPath: NSIndexPath) -> (UICollectionViewCell)
 public typealias CollectionConfigureCellType = (cell: UICollectionViewCell, object: Any) -> Void
 public typealias CollectionSectionViewFactoryType = (collectionView: UICollectionView, section: CollectionSection) -> (UICollectionReusableView)
 
 public protocol CollectionDataSource : NSObjectProtocol, DataSource {
     func cellFactoryForSection(sectionIndex: Int) -> CollectionCellFactoryType
+    func emptyCellFactoryForSection(sectionIndex: Int) -> CollectionEmptyCellFactoryType?
     func configureCellForSection(sectionIndex: Int) -> CollectionConfigureCellType?
     func sectionViewFactoryForSection(sectionIndex: Int) -> CollectionSectionViewFactoryType?
 }

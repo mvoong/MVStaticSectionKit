@@ -126,6 +126,7 @@ public class TableSection : Section {
 public class CollectionSection : Section {
     var cellFactory: CollectionCellFactoryType!
     var configureCell: CollectionConfigureCellType?
+    var emptyCellFactory: CollectionEmptyCellFactoryType?
     var sectionViewFactory: CollectionSectionViewFactoryType?
     
     public required init() {

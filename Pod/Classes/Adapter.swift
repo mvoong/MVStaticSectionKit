@@ -81,23 +81,37 @@ class CollectionViewAdapter : NSObject, UICollectionViewDataSource {
         return self.dataSource?.numberOfSections() ?? 0
     }
     
+    func showEmptyCellAtSection(sectionIndex: Int) -> Bool {
+        return dataSource?.isSectionEmpty(sectionIndex) == true && dataSource?.emptyCellFactoryForSection(sectionIndex) != nil
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.dataSource?.numberOfItemsInSection(section) ?? 0
+        if showEmptyCellAtSection(section) {
+            return 1
+        } else {
+            return self.dataSource?.numberOfItemsInSection(section) ?? 0
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        guard let object = self.dataSource?.objectAtIndexPath(indexPath),
-            cellFactory = self.dataSource?.cellFactoryForSection(indexPath.section) else {
-                fatalError("Invalid section: \(indexPath)")
+        if showEmptyCellAtSection(indexPath.section) {
+            let cellFactory = self.dataSource?.emptyCellFactoryForSection(indexPath.section)
+            
+            return cellFactory!(collectionView: collectionView, indexPath: indexPath)
+        } else {
+            guard let object = self.dataSource?.objectAtIndexPath(indexPath),
+                cellFactory = self.dataSource?.cellFactoryForSection(indexPath.section) else {
+                    fatalError("Invalid section: \(indexPath)")
+            }
+            
+            let cell = cellFactory(collectionView: collectionView, indexPath: indexPath, object: object)
+            
+            if let configureCell = self.dataSource?.configureCellForSection(indexPath.section) {
+                configureCell(cell: cell, object: object)
+            }
+            
+            return cell
         }
-        
-        let cell = cellFactory(collectionView: collectionView, indexPath: indexPath, object: object)
-        
-        if let configureCell = self.dataSource?.configureCellForSection(indexPath.section) {
-            configureCell(cell: cell, object: object)
-        }
-        
-        return cell
     }
     
     deinit {
